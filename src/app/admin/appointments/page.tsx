@@ -60,6 +60,7 @@ export default function AppointmentsManagerPage() {
       phone_number: apt.phone_number,
       visit_type: apt.patient_type === 'new' ? 'consultation' : 'course_followup',
       status: 'waiting',
+      queue_date: new Date().toISOString().split('T')[0],
       arrival_time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       assigned_doctor: 'Dr. Supriya S. Kadam',
       notes: `Pre-booked appointment for ${apt.category}. Note: ${apt.short_message || 'None'}`,

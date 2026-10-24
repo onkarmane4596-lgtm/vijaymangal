@@ -50,6 +50,7 @@ export default function FollowUpsCalendarPage() {
       phone_number: pat.phone_number,
       visit_type: 'course_followup',
       status: 'waiting',
+      queue_date: new Date().toISOString().split('T')[0],
       arrival_time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       assigned_doctor: 'Dr. Supriya S. Kadam',
       notes: `Follow-up visit for ${task.administrative_notes || 'Scheduled course checkup'}`,

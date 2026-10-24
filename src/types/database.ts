@@ -189,6 +189,7 @@ export interface FollowUpTask {
   priority: TaskPriority;
   task_type: TaskType;
   administrative_notes?: string;
+  internal_notes?: string;
   assigned_to?: string;
   completed_at?: string;
   created_at: string;

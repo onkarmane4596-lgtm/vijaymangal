@@ -583,7 +583,7 @@ export default function AdminOverviewDeskPage() {
 
                       <p className="text-xs text-[#262820]/80">
                         Course: <strong className="text-[#6517a3]">{course?.course_name || 'Ayurvedic Treatment'}</strong>
-                        {task.internal_notes && ` • "${task.internal_notes}"`}
+                        {(task.administrative_notes || task.internal_notes) && ` • "${task.administrative_notes || task.internal_notes}"`}
                       </p>
                     </div>
 

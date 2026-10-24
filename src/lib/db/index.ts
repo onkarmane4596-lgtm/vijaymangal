@@ -509,7 +509,10 @@ class MemoryDataStore {
   }
 
   addOpdToken(
-    data: Omit<OpdQueueItem, 'id' | 'token_number' | 'created_at' | 'updated_at'> & { token_number?: number }
+    data: Omit<OpdQueueItem, 'id' | 'token_number' | 'created_at' | 'updated_at' | 'queue_date'> & {
+      token_number?: number;
+      queue_date?: string;
+    }
   ): OpdQueueItem {
     const todayStr = new Date().toISOString().split('T')[0];
     const todayTokens = this.opdQueue.filter((item) => item.queue_date === (data.queue_date || todayStr));
