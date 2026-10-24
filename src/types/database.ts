@@ -255,3 +255,33 @@ export interface PaymentRecord {
   recorded_by?: string;
   created_at: string;
 }
+
+export type OpdStatus = 'waiting' | 'in_consultation' | 'dispensing' | 'completed' | 'cancelled';
+export type OpdVisitType = 'consultation' | 'course_followup' | 'panchakarma' | 'medicine_refill' | 'emergency';
+
+export interface OpdVitals {
+  bp?: string;
+  pulse_bpm?: number;
+  weight_kg?: number;
+  nadi_assessment?: string;
+  chief_complaint?: string;
+}
+
+export interface OpdQueueItem {
+  id: string;
+  token_number: number;
+  patient_id?: string;
+  patient_name: string;
+  phone_number: string;
+  visit_type: OpdVisitType;
+  status: OpdStatus;
+  vitals?: OpdVitals;
+  queue_date: string;
+  arrival_time: string;
+  called_at?: string;
+  completed_at?: string;
+  assigned_doctor: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}

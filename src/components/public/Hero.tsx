@@ -1,163 +1,153 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, ArrowRight, MessageCircle, Sparkles, Activity, ShieldCheck, HeartHandshake } from 'lucide-react';
-import { getWhatsAppUrl, WHATSAPP_TEMPLATES } from '@/lib/whatsapp';
+import {
+  Calendar,
+  ArrowRight,
+  MessageCircle,
+  Sparkles,
+  CheckCircle2,
+  Phone,
+  ShieldCheck,
+  Stethoscope,
+  HeartPulse,
+  Leaf,
+} from 'lucide-react';
+import { getWhatsAppUrl, WHATSAPP_TEMPLATES, CLINIC_PHONE } from '@/lib/whatsapp';
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#f7f4ea] via-[#faf8f3] to-white pt-8 pb-16 lg:py-20 border-b border-[#e6dfd3]/60">
-      {/* Decorative background glow circles */}
-      <div className="absolute top-0 right-0 -mr-24 -mt-24 w-96 h-96 rounded-full bg-[#6517a3]/5 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 -ml-24 -mb-24 w-96 h-96 rounded-full bg-[#5b8e46]/5 blur-3xl pointer-events-none" />
+    <section className="relative min-h-[640px] lg:min-h-[720px] flex items-center overflow-hidden bg-[#122b1e] text-white">
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/hero-sanctuary-bg.jpg"
+          alt="Vijaymangal Ayurved Sanctuary - Classical Ayurvedic Medicine and Panchakarma, Atpadi"
+          fill
+          priority
+          className="object-cover object-[center_right] lg:object-center transform scale-105"
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      {/* Modern Multi-Layered Mask Overlays */}
+      {/* 1. Deep Forest to Subtle Translucent Horizontal Gradient Mask */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#10281b]/95 via-[#122b1e]/85 to-[#183d2b]/35 lg:to-[#183d2b]/20 pointer-events-none" />
+      
+      {/* 2. Top-to-Bottom Subtle Ambient Mask */}
+      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-[#122b1e]/85 via-transparent to-transparent pointer-events-none" />
+
+      {/* 3. Subtle Radial Glow behind text */}
+      <div className="absolute top-1/4 left-10 lg:left-1/4 -translate-x-1/2 w-[500px] h-[500px] bg-[#5b8e46]/15 rounded-full blur-3xl pointer-events-none z-[2]" />
+
+      {/* Content Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-20 relative z-10 w-full">
+        <div className="max-w-3xl space-y-7">
           
-          {/* Left Text Column */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#6517a3]/10 border border-[#6517a3]/20 text-[#6517a3] text-xs sm:text-sm font-semibold tracking-wide">
-              <Sparkles className="w-4 h-4 text-[#d99136]" />
-              <span className="font-marathi-heading">
-                शास्त्रोक्त आयुर्वेद समाजापर्यंत पोहोचविण्याचा वचनबद्ध संकल्प
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="font-marathi-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#183d2b] leading-[1.25] tracking-tight">
-              आपल्या आरोग्याच्या प्रवासात{' '}
-              <span className="text-[#6517a3]">वैयक्तिक आयुर्वेदिक मार्गदर्शन</span>
-            </h1>
-
-            {/* Sub-description */}
-            <p className="text-base sm:text-lg text-[#262820]/80 leading-relaxed max-w-2xl font-marathi-heading">
-              आयुर्वेदिक औषधोपचार, पंचकर्म चिकित्सा आणि आपल्या प्रकृतीनुसार आरोग्यविषयक गरजांसाठी विजयमंगल आयुर्वेदाशी संपर्क साधा. नैसर्गिक आणि शास्त्रोक्त पद्धतीने आरोग्याची निगा.
-            </p>
-
-            {/* Practitioner verified badge */}
-            <div className="p-4 rounded-xl bg-white/90 border border-[#e6dfd3] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 max-w-xl">
-              <div>
-                <div className="text-xs font-semibold text-[#5b8e46] uppercase tracking-wider">
-                  तज्ज्ञ वैद्य (Consulting Ayurvedic Physician)
-                </div>
-                <div className="font-marathi-heading font-bold text-lg text-[#183d2b]">
-                  डॉ. सुप्रिया श्रीप्रसाद कदम
-                </div>
-                <div className="text-xs font-medium text-[#6517a3]">
-                  एम. डी. (आयुर्वेद) — आयुर्वेद औषधोपचार व पंचकर्म चिकित्सा
-                </div>
-              </div>
-              <div className="text-xs px-2.5 py-1 rounded-md bg-[#5b8e46]/10 text-[#183d2b] font-semibold border border-[#5b8e46]/20">
-                आटपाडी क्लिनिक
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
-              <Link
-                href="/book-appointment"
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-base font-semibold text-white bg-gradient-to-r from-[#6517a3] to-[#490f77] hover:from-[#490f77] hover:to-[#6517a3] rounded-xl shadow-md hover:shadow-lg transition-all active:scale-98"
-              >
-                <Calendar className="w-5 h-5" />
-                <span>अपॉइंटमेंट बुक करा</span>
-              </Link>
-
-              <Link
-                href="/treatments"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 text-base font-semibold text-[#183d2b] bg-white hover:bg-[#f7f4ea] border border-[#e6dfd3] rounded-xl shadow-xs hover:border-[#6517a3]/40 transition-all"
-              >
-                <span>उपचार व सेवा पहा</span>
-                <ArrowRight className="w-4 h-4 text-[#6517a3]" />
-              </Link>
-
-              <a
-                href={getWhatsAppUrl(WHATSAPP_TEMPLATES.general)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 text-base font-semibold text-[#075e54] bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/40 rounded-xl transition-all"
-              >
-                <MessageCircle className="w-5 h-5 text-[#25D366] fill-[#25D366]" />
-                <span>WhatsApp</span>
-              </a>
-            </div>
-
-            {/* 4 Feature Highlights */}
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-[#e6dfd3]/80">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-[#5b8e46]/15 flex items-center justify-center text-[#5b8e46] shrink-0">
-                  <Activity className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-semibold text-[#183d2b] font-marathi-heading">
-                  आयुर्वेदिक सल्ला
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-[#6517a3]/15 flex items-center justify-center text-[#6517a3] shrink-0">
-                  <HeartHandshake className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-semibold text-[#183d2b] font-marathi-heading">
-                  वैयक्तिक मार्गदर्शन
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-[#d99136]/15 flex items-center justify-center text-[#d99136] shrink-0">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-semibold text-[#183d2b] font-marathi-heading">
-                  आयुर्वेद औषधोपचार
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-[#183d2b]/15 flex items-center justify-center text-[#183d2b] shrink-0">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-semibold text-[#183d2b] font-marathi-heading">
-                  पंचकर्म चिकित्सा
-                </span>
-              </div>
-            </div>
+          {/* Eyebrow Badge (Frosted Glass Pill) */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-md">
+            <span className="w-2 h-2 rounded-full bg-[#d99136] animate-pulse" />
+            <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#f7f4ea]">
+              Authentic Ayurveda Clinic • Atpadi, Maharashtra
+            </span>
           </div>
 
-          {/* Right Image Showcase */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              {/* Outer decorative border frame */}
-              <div className="absolute -inset-3 rounded-2xl bg-gradient-to-tr from-[#6517a3]/20 via-[#d99136]/20 to-[#5b8e46]/20 transform rotate-1 blur-xs" />
-              
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white">
-                <div className="relative h-80 sm:h-96 lg:h-[440px] w-full">
-                  <Image
-                    src="/images/hero-apothecary.jpg"
-                    alt="विजयमंगल आयुर्वेद क्लिनिक व औषधालय"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                </div>
+          {/* Headline with Bilingual Typography */}
+          <div className="space-y-3">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-white drop-shadow-sm">
+              AYURVEDA <br />
+              <span className="font-display italic font-normal text-[#f7f4ea] text-3xl sm:text-4xl lg:text-5xl block sm:inline">
+                &amp; Ayurvedic Medicine
+              </span>
+            </h1>
+            <p className="font-marathi-heading text-xl sm:text-2xl font-bold text-[#f7f4ea] tracking-wide pt-1">
+              शास्त्रोक्त आयुर्वेद आणि पंचकर्म चिकित्सा
+            </p>
+          </div>
 
-                {/* Overlaid Banner at bottom of image */}
-                <div className="absolute bottom-0 inset-x-0 p-5 text-white">
-                  <div className="inline-block px-2.5 py-1 rounded bg-[#d99136] text-black text-xs font-bold uppercase tracking-wider mb-2">
-                    पारंपरिक शास्त्रोक्त आयुर्वेद
-                  </div>
-                  <h3 className="font-marathi-heading text-lg sm:text-xl font-bold">
-                    शुद्ध औषधी घटक व वैयक्तिक प्रकृती विश्लेषण
-                  </h3>
-                  <p className="text-xs text-white/90 mt-1 font-marathi-heading">
-                    स्थानिक रुग्णांच्या सुलभतेसाठी आटपाडी येथे नियमित सल्लामसलत उपलब्ध.
-                  </p>
-                </div>
+          {/* Subtitle description */}
+          <p className="text-sm sm:text-base text-white/90 max-w-2xl leading-relaxed font-sans drop-shadow-xs">
+            Sensitive, personalized healthcare guided by <strong>Dr. Supriya Shreeprasad Kadam, M.D. (Ayurveda)</strong>. We diagnose constitutional imbalances (Vata, Pitta, Kapha) through traditional pulse examination, classical formulations, and root-cause revitalization.
+          </p>
+
+          {/* Action CTAs */}
+          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            <Link
+              href="/book-appointment"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-[#183d2b] hover:bg-[#f7f4ea] text-sm font-bold shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95"
+            >
+              <Calendar className="w-4 h-4 text-[#d99136]" />
+              <span>Book Appointment</span>
+            </Link>
+
+            <a
+              href={getWhatsAppUrl(WHATSAPP_TEMPLATES.general)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
+            >
+              <MessageCircle className="w-4 h-4 fill-white" />
+              <span>Chat on WhatsApp</span>
+            </a>
+
+            <a
+              href={`tel:+91${CLINIC_PHONE}`}
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/25 text-white text-sm font-semibold transition-all duration-200"
+            >
+              <Phone className="w-4 h-4 text-[#d99136]" />
+              <span>Call: 82639 02142</span>
+            </a>
+          </div>
+
+          {/* Floating Glass Trust Strip */}
+          <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
+            <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-left">
+              <div className="flex items-center gap-2 text-[#d99136]">
+                <Leaf className="w-4 h-4" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white">100% Classical</span>
               </div>
+              <p className="text-[11px] text-white/80 font-marathi-heading mt-1">
+                शुद्ध वनस्पती व संहितेनुसार औषधी
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-left">
+              <div className="flex items-center gap-2 text-[#d99136]">
+                <HeartPulse className="w-4 h-4" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white">Nadi Parikshan</span>
+              </div>
+              <p className="text-[11px] text-white/80 font-marathi-heading mt-1">
+                पारंपरिक नाडी व प्रकृती तपासणी
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-left">
+              <div className="flex items-center gap-2 text-[#d99136]">
+                <Stethoscope className="w-4 h-4" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white">M.D. Qualified</span>
+              </div>
+              <p className="text-[11px] text-white/80 font-marathi-heading mt-1">
+                डॉ. सुप्रिया कदम यांचे थेट मार्गदर्शन
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-left">
+              <div className="flex items-center gap-2 text-[#d99136]">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white">Panchakarma</span>
+              </div>
+              <p className="text-[11px] text-white/80 font-marathi-heading mt-1">
+                शरीर शुद्धीकरण व त्रिदोष संतुलन
+              </p>
             </div>
           </div>
 
         </div>
       </div>
+
+      {/* Clean Architectural Bottom Border Accent Merging Into Next Section */}
+      <div className="absolute bottom-0 inset-x-0 z-[10] h-[2px] bg-gradient-to-r from-transparent via-[#d99136]/50 to-transparent pointer-events-none" />
     </section>
   );
 }

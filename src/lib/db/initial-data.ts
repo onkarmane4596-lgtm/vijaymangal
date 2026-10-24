@@ -9,6 +9,9 @@ import {
   FollowUpTask,
   Appointment,
   Profile,
+  OpdQueueItem,
+  AuditLog,
+  CommunicationLog,
 } from '@/types/database';
 
 export const initialClinicSettings: ClinicSettings = {
@@ -592,3 +595,127 @@ export const initialAppointments: Appointment[] = [
     updated_at: '2026-10-23T15:10:00Z',
   },
 ];
+
+const todayDateStr = new Date().toISOString().split('T')[0];
+
+export const initialOpdQueue: OpdQueueItem[] = [
+  {
+    id: 'opd-001',
+    token_number: 1,
+    patient_id: 'pat-001',
+    patient_name: 'Rahul Narayan Patil',
+    phone_number: '9822012345',
+    visit_type: 'course_followup',
+    status: 'in_consultation',
+    vitals: {
+      bp: '128/82',
+      pulse_bpm: 74,
+      weight_kg: 71.5,
+      nadi_assessment: 'Vata-Pitta',
+      chief_complaint: 'Knee joint mobility checkup & Month 4 renewal',
+    },
+    queue_date: todayDateStr,
+    arrival_time: '09:15 AM',
+    called_at: '09:30 AM',
+    assigned_doctor: 'Dr. Supriya S. Kadam',
+    notes: 'Walk-in for regular course checkup.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'opd-002',
+    token_number: 2,
+    patient_name: 'Mahesh Suresh Deshmukh',
+    phone_number: '9890123456',
+    visit_type: 'consultation',
+    status: 'waiting',
+    vitals: {
+      bp: '136/88',
+      pulse_bpm: 80,
+      weight_kg: 78.0,
+      chief_complaint: 'Chronic acidity & retrosternal burning',
+    },
+    queue_date: todayDateStr,
+    arrival_time: '09:40 AM',
+    assigned_doctor: 'Dr. Supriya S. Kadam',
+    notes: 'First time consultation. Pre-booked online.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'opd-003',
+    token_number: 3,
+    patient_name: 'Sunita Anand Shinde',
+    phone_number: '9765432109',
+    visit_type: 'medicine_refill',
+    status: 'dispensing',
+    vitals: {
+      weight_kg: 62.0,
+      chief_complaint: 'Refill of Sandhivata Oil & Churna',
+    },
+    queue_date: todayDateStr,
+    arrival_time: '09:50 AM',
+    assigned_doctor: 'Dr. Supriya S. Kadam',
+    notes: 'Monthly herbal medicine collection.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
+export const initialAuditLogs: AuditLog[] = [
+  {
+    id: 'log-001',
+    user_id: 'prof-001',
+    action: 'PATIENT_REGISTERED',
+    entity_type: 'patient',
+    entity_id: 'pat-001',
+    details: { name: 'Rahul Narayan Patil', patient_number: 'VMA-2026-0001' },
+    ip_address: '103.21.124.89 (Atpadi OPD Desk)',
+    created_at: '2026-10-23T09:30:00Z',
+  },
+  {
+    id: 'log-002',
+    user_id: 'prof-001',
+    action: 'COURSE_ASSIGNED',
+    entity_type: 'course',
+    entity_id: 'crs-001',
+    details: { course_name: 'Sandhivata Rejuvenation Program (4-Month)', price: 6000 },
+    ip_address: '103.21.124.89 (Atpadi OPD Desk)',
+    created_at: '2026-10-23T10:00:00Z',
+  },
+  {
+    id: 'log-003',
+    user_id: 'prof-001',
+    action: 'PRESCRIPTION_DISPENSED',
+    entity_type: 'prescription',
+    entity_id: 'rx-001',
+    details: { medicines: ['Yograj Guggulu', 'Ashwagandharishta', 'Mahanarayan Taila'] },
+    ip_address: '103.21.124.89 (Atpadi OPD Desk)',
+    created_at: '2026-10-23T10:15:00Z',
+  },
+  {
+    id: 'log-004',
+    user_id: 'prof-002',
+    action: 'APPOINTMENT_CONFIRMED',
+    entity_type: 'appointment',
+    entity_id: 'apt-001',
+    details: { patient: 'Rahul Narayan Patil', time: '10:30 AM' },
+    ip_address: '103.21.124.89 (Reception)',
+    created_at: '2026-10-23T11:00:00Z',
+  },
+];
+
+export const initialCommunicationLogs: CommunicationLog[] = [
+  {
+    id: 'comm-001',
+    patient_id: 'pat-001',
+    channel: 'whatsapp',
+    message_type: 'appointment',
+    content: 'नमस्कार राहुल पाटील, आपली विजयमंगल आयुर्वेद येथील भेट 25 ऑक्टोबर रोजी सकाळी 10:30 वाजता निश्चित झाली आहे.',
+    recipient_phone: '9822012345',
+    status: 'sent',
+    created_by: 'Dr. Supriya Shreeprasad Kadam',
+    created_at: '2026-10-23T11:05:00Z',
+  },
+];
+

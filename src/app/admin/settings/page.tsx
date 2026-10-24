@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Settings, Save, CheckCircle2, ShieldAlert } from 'lucide-react';
+import Link from 'next/link';
+import { Settings, Save, CheckCircle2, ShieldAlert, UserCog, BarChart3 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { ClinicSettings } from '@/types/database';
 
@@ -23,11 +24,43 @@ export default function ClinicSettingsPage() {
       <div>
         <h1 className="text-2xl font-bold text-[#183d2b] flex items-center gap-2">
           <Settings className="w-6 h-6 text-[#183d2b]" />
-          <span>Clinic Configuration & Practice Settings</span>
+          <span>Clinic Settings & Practice Management</span>
         </h1>
         <p className="text-xs text-[#6b7280] mt-1">
-          Update practice identity, practitioner qualifications, contact details, and location.
+          Practice identity, consultation hours, staff accounts, analytics, and security audit log.
         </p>
+      </div>
+
+      {/* Sub Navigation Bar */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#e6dfd3] pb-3 text-xs">
+        <Link
+          href="/admin/settings"
+          className="px-3.5 py-1.5 rounded-lg bg-[#183d2b] text-white font-bold flex items-center gap-1.5"
+        >
+          <Settings className="w-3.5 h-3.5" />
+          <span>1. Practice Info & Timings</span>
+        </Link>
+        <Link
+          href="/admin/staff"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium flex items-center gap-1.5"
+        >
+          <UserCog className="w-3.5 h-3.5" />
+          <span>2. Staff Accounts</span>
+        </Link>
+        <Link
+          href="/admin/reports"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium flex items-center gap-1.5"
+        >
+          <BarChart3 className="w-3.5 h-3.5" />
+          <span>3. Practice Reports</span>
+        </Link>
+        <Link
+          href="/admin/audit-log"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium flex items-center gap-1.5"
+        >
+          <ShieldAlert className="w-3.5 h-3.5" />
+          <span>4. Audit Trail</span>
+        </Link>
       </div>
 
       {savedSuccess && (

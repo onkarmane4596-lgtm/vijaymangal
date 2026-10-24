@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Serif_Devanagari, Plus_Jakarta_Sans } from "next/font/google";
+import { Noto_Serif_Devanagari, Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { FloatingActionWidget } from "@/components/public/FloatingActionWidget";
 import "./globals.css";
 
 const notoDevanagari = Noto_Serif_Devanagari({
@@ -12,7 +13,14 @@ const notoDevanagari = Noto_Serif_Devanagari({
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -25,37 +33,37 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://vijaymangal-ayurved.vercel.app"),
   title: {
-    default: "विजयमंगल आयुर्वेद | डॉ. सुप्रिया श्रीप्रसाद कदम (एम. डी. आयुर्वेद) - आटपाडी",
-    template: "%s | विजयमंगल आयुर्वेद, आटपाडी",
+    default: "Vijaymangal Ayurved | Dr. Supriya S. Kadam, M.D. (Ayurveda) - Atpadi",
+    template: "%s | Vijaymangal Ayurved, Atpadi",
   },
   description:
-    "विजयमंगल आयुर्वेद, आटपाडी. डॉ. सुप्रिया श्रीप्रसाद कदम, एम. डी. (आयुर्वेद). शास्त्रोक्त आयुर्वेद समाजापर्यंत पोहोचविण्याचा वचनबद्ध संकल्प. सांधेदुखी, पचनविकार, महिलांचे आरोग्य, पंचकर्म चिकित्सा व वैयक्तिक मार्गदर्शन.",
+    "Vijaymangal Ayurved, Atpadi. Consulting Physician: Dr. Supriya Shreeprasad Kadam, M.D. (Ayurveda). Classical Ayurvedic medicine, Panchakarma therapies, pulse diagnosis, and personalized treatment courses.",
   keywords: [
-    "विजयमंगल आयुर्वेद",
     "Vijaymangal Ayurved",
+    "विजयमंगल आयुर्वेद",
     "Dr Supriya Kadam Atpadi",
-    "आयुर्वेदिक सल्ला आटपाडी",
-    "पंचकर्म चिकित्सा",
-    "सांधेदुखी आयुर्वेदिक उपचार",
-    "Panchakarma Atpadi",
-    "आयुर्वेदिक औषधोपचार",
+    "Dr. Supriya Shreeprasad Kadam",
+    "Ayurvedic Clinic Atpadi",
+    "Panchakarma Center Sangli",
+    "Sandhivata Ayurvedic Treatment",
+    "Classical Ayurveda Maharashtra",
   ],
-  authors: [{ name: "डॉ. सुप्रिया श्रीप्रसाद कदम" }],
-  creator: "विजयमंगल आयुर्वेद",
+  authors: [{ name: "Dr. Supriya Shreeprasad Kadam" }],
+  creator: "Vijaymangal Ayurved",
   openGraph: {
     type: "website",
     locale: "mr_IN",
     url: "https://vijaymangal-ayurved.vercel.app",
-    siteName: "विजयमंगल आयुर्वेद (Vijaymangal Ayurved)",
-    title: "विजयमंगल आयुर्वेद | शास्त्रोक्त आयुर्वेद औषधोपचार व पंचकर्म चिकित्सा - आटपाडी",
+    siteName: "Vijaymangal Ayurved (विजयमंगल आयुर्वेद)",
+    title: "Vijaymangal Ayurved | Classical Ayurvedic Care & Panchakarma - Atpadi",
     description:
-      "डॉ. सुप्रिया श्रीप्रसाद कदम, एम. डी. (आयुर्वेद). आपल्या आरोग्याच्या प्रवासात वैयक्तिक आयुर्वेदिक मार्गदर्शन.",
+      "Dr. Supriya Shreeprasad Kadam, M.D. (Ayurveda). Authentic classical Ayurveda, personalized consultations, and structured wellness courses.",
     images: [
       {
         url: "/images/hero-apothecary.jpg",
         width: 1200,
         height: 675,
-        alt: "विजयमंगल आयुर्वेद आटपाडी",
+        alt: "Vijaymangal Ayurved Atpadi",
       },
     ],
   },
@@ -73,10 +81,11 @@ export default function RootLayout({
   return (
     <html
       lang="mr"
-      className={`${notoDevanagari.variable} ${plusJakartaSans.variable} antialiased scroll-smooth`}
+      className={`${notoDevanagari.variable} ${plusJakartaSans.variable} ${playfairDisplay.variable} antialiased scroll-smooth`}
     >
-      <body className="min-h-screen flex flex-col bg-[#faf8f5] text-[#262820]">
+      <body className="min-h-screen flex flex-col bg-[#faf8f5] text-[#262820] font-sans selection:bg-[#6517a3] selection:text-white">
         {children}
+        <FloatingActionWidget />
       </body>
     </html>
   );

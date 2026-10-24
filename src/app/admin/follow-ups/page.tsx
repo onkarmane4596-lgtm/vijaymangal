@@ -11,10 +11,12 @@ import {
   AlertTriangle,
   ChevronRight,
   Filter,
+  Activity,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
 import { getWhatsAppUrl, WHATSAPP_TEMPLATES } from '@/lib/whatsapp';
+import { FollowUpTask } from '@/types/database';
 
 export default function FollowUpsCalendarPage() {
   const [, setRefresh] = useState(0);
@@ -30,6 +32,32 @@ export default function FollowUpsCalendarPage() {
   const [dueDate, setDueDate] = useState(todayStr);
   const [priority, setPriority] = useState<'low' | 'medium' | 'high' | 'urgent'>('medium');
   const [notes, setNotes] = useState('Monthly progress checkup and medicine review');
+
+  const handleAdmitFollowupToOpd = (task: FollowUpTask) => {
+    const pat = task.patient || patients.find((p) => p.id === task.patient_id);
+    if (!pat) return;
+
+    const todayOpd = db.getTodayOpdQueue();
+    const existing = todayOpd.find((o) => o.patient_id === pat.id);
+    if (existing) {
+      alert(`${pat.full_name} is already in today's OPD with Token #${existing.token_number}`);
+      return;
+    }
+
+    const token = db.addOpdToken({
+      patient_id: pat.id,
+      patient_name: pat.full_name,
+      phone_number: pat.phone_number,
+      visit_type: 'course_followup',
+      status: 'waiting',
+      arrival_time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      assigned_doctor: 'Dr. Supriya S. Kadam',
+      notes: `Follow-up visit for ${task.administrative_notes || 'Scheduled course checkup'}`,
+    });
+
+    alert(`Token #${token.token_number} issued for ${pat.full_name}! Added to today's OPD Desk.`);
+    setRefresh((r) => r + 1);
+  };
 
   // Filter tasks by tab
   const filteredTasks = allTasks.filter((t) => {
@@ -183,6 +211,17 @@ export default function FollowUpsCalendarPage() {
                       <MessageCircle className="w-3.5 h-3.5 text-[#25D366] fill-[#25D366]" />
                       <span>WhatsApp Follow-up</span>
                     </a>
+                  )}
+
+                  {task.task_status !== 'completed' && (
+                    <button
+                      onClick={() => handleAdmitFollowupToOpd(task)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#183d2b] hover:bg-[#254f39] text-white font-semibold text-xs shadow-xs"
+                      title="Patient arrived at clinic - issue OPD token"
+                    >
+                      <Activity className="w-3.5 h-3.5 text-[#d99136]" />
+                      <span>Admit to OPD</span>
+                    </button>
                   )}
 
                   {task.task_status !== 'completed' && (

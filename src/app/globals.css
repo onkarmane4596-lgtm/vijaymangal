@@ -46,6 +46,7 @@
   --color-ayur-border: var(--ayur-border);
   --font-serif-mr: var(--font-devanagari);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 }
 
 body {
@@ -59,19 +60,36 @@ body {
   font-family: var(--font-devanagari), Georgia, serif;
 }
 
-/* Glassmorphism & Card Utilities */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+/* Glassmorphism & Luxury Cards */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(230, 223, 211, 0.8);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(230, 223, 211, 0.85);
 }
 
 .glass-panel-dark {
-  background: rgba(24, 61, 43, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(24, 61, 43, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card-luxury {
+  background: #ffffff;
+  border: 1px solid #e6dfd3;
+  box-shadow: 0 10px 30px -10px rgba(24, 61, 43, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-luxury:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -12px rgba(101, 23, 163, 0.12);
+  border-color: rgba(101, 23, 163, 0.35);
 }
 
 .gold-gradient-text {
@@ -82,6 +100,32 @@ body {
 
 .purple-green-gradient {
   background: linear-gradient(135deg, #183d2b 0%, #2e104e 100%);
+}
+
+.luxury-gradient-text {
+  background: linear-gradient(135deg, #183d2b 0%, #6517a3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Shimmer & Glow Animations */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* Custom Scrollbar */

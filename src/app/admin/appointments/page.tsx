@@ -11,11 +11,12 @@ import {
   MessageCircle,
   Calendar,
   AlertCircle,
+  Activity,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
 import { getWhatsAppUrl, WHATSAPP_TEMPLATES } from '@/lib/whatsapp';
-import { AppointmentStatus } from '@/types/database';
+import { Appointment, AppointmentStatus } from '@/types/database';
 
 export default function AppointmentsManagerPage() {
   const [, setRefresh] = useState(0);
@@ -23,6 +24,7 @@ export default function AppointmentsManagerPage() {
   const [statusFilter, setStatusFilter] = useState<'all' | AppointmentStatus>('all');
 
   const appointments = db.getAppointments();
+  const todayOpd = db.getTodayOpdQueue();
 
   const filteredAppointments = appointments.filter((a) => {
     const matchesSearch =
@@ -40,6 +42,31 @@ export default function AppointmentsManagerPage() {
       status,
       confirmed_date: status === 'confirmed' ? new Date().toISOString().split('T')[0] : undefined,
     });
+    setRefresh((r) => r + 1);
+  };
+
+  const handleAdmitToOpd = (apt: Appointment) => {
+    const existing = todayOpd.find(
+      (o) => o.phone_number === apt.phone_number || o.patient_name === apt.full_name
+    );
+    if (existing) {
+      alert(`Patient is already checked in with Token #${existing.token_number} (${existing.status})`);
+      return;
+    }
+
+    const token = db.addOpdToken({
+      patient_id: apt.patient_id,
+      patient_name: apt.full_name,
+      phone_number: apt.phone_number,
+      visit_type: apt.patient_type === 'new' ? 'consultation' : 'course_followup',
+      status: 'waiting',
+      arrival_time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      assigned_doctor: 'Dr. Supriya S. Kadam',
+      notes: `Pre-booked appointment for ${apt.category}. Note: ${apt.short_message || 'None'}`,
+    });
+
+    db.updateAppointment(apt.id, { status: 'confirmed' });
+    alert(`Token #${token.token_number} issued for ${apt.full_name}! Added to today's OPD Desk.`);
     setRefresh((r) => r + 1);
   };
 
@@ -163,6 +190,18 @@ export default function AppointmentsManagerPage() {
                   <MessageCircle className="w-3.5 h-3.5 text-[#25D366] fill-[#25D366]" />
                   <span>WhatsApp</span>
                 </a>
+
+                {/* Admit to Today's OPD Button */}
+                {apt.status !== 'cancelled' && apt.status !== 'completed' && (
+                  <button
+                    onClick={() => handleAdmitToOpd(apt)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#183d2b] hover:bg-[#254f39] text-white font-semibold shadow-xs"
+                    title="Admit patient to today's live OPD queue & issue token"
+                  >
+                    <Activity className="w-3.5 h-3.5 text-[#d99136]" />
+                    <span>Admit to OPD</span>
+                  </button>
+                )}
 
                 {apt.status === 'requested' && (
                   <button

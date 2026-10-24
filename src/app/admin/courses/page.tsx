@@ -11,9 +11,11 @@ import {
   CheckCircle2,
   ChevronRight,
   User,
+  MessageCircle,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { formatDate, formatCurrency } from '@/lib/utils';
+import { getWhatsAppUrl, WHATSAPP_TEMPLATES } from '@/lib/whatsapp';
 import { CourseStatus } from '@/types/database';
 
 export default function CoursesManagementPage() {
@@ -75,6 +77,12 @@ export default function CoursesManagementPage() {
       db.renewCourse(courseId, 4, 6000);
       setRefresh((r) => r + 1);
     }
+  };
+
+  const handleTogglePayment = (courseId: string, current: string) => {
+    const nextStatus = current === 'paid' ? 'unpaid' : current === 'unpaid' ? 'paid' : 'unpaid';
+    db.updateCourse(courseId, { payment_status: nextStatus });
+    setRefresh((r) => r + 1);
   };
 
   return (
@@ -187,9 +195,17 @@ export default function CoursesManagementPage() {
                         <div className="font-semibold text-[#183d2b]">
                           {formatCurrency(c.agreed_price)}
                         </div>
-                        <span className="text-[10px] uppercase font-bold text-[#5b8e46]">
-                          {c.payment_status}
-                        </span>
+                        <button
+                          onClick={() => handleTogglePayment(c.id, c.payment_status)}
+                          title="Click to toggle Paid / Unpaid"
+                          className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded cursor-pointer transition-colors ${
+                            c.payment_status === 'paid'
+                              ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                          }`}
+                        >
+                          {c.payment_status} ✎
+                        </button>
                       </td>
                       <td className="py-3.5 px-4">
                         <span
@@ -204,6 +220,24 @@ export default function CoursesManagementPage() {
                       </td>
                       <td className="py-3.5 px-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
+                          {patient && (
+                            <a
+                              href={getWhatsAppUrl(
+                                WHATSAPP_TEMPLATES.courseRefillReminder(
+                                  patient.full_name,
+                                  c.course_name
+                                ),
+                                patient.phone_number
+                              )}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 rounded-lg bg-[#25D366]/15 hover:bg-[#25D366]/25 text-[#075e54] flex items-center gap-1 text-[11px] font-semibold"
+                              title="Send WhatsApp medicine refill notice"
+                            >
+                              <MessageCircle className="w-3.5 h-3.5 text-[#25D366] fill-[#25D366]" />
+                              <span className="hidden sm:inline">Send Refill</span>
+                            </a>
+                          )}
                           {c.course_status === 'active' && (
                             <button
                               onClick={() => handleRenew(c.id)}

@@ -5,7 +5,7 @@ import { getWhatsAppUrl, WHATSAPP_TEMPLATES, CLINIC_PHONE } from '@/lib/whatsapp
 
 export function ContactLocationSection() {
   return (
-    <section className="py-16 sm:py-24 bg-white border-t border-[#e6dfd3]">
+    <section id="contact" className="py-20 sm:py-28 bg-white border-t border-[#e6dfd3] scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -82,19 +82,19 @@ export function ContactLocationSection() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link
                 href="/book-appointment"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#6517a3] text-white text-sm font-semibold hover:bg-[#490f77] transition-all shadow-xs"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183d2b] text-white text-sm font-semibold hover:bg-[#254f39] transition-all shadow-xs active:scale-95"
               >
-                <Calendar className="w-4 h-4" />
-                <span>अपॉइंटमेंट बुक करा</span>
+                <Calendar className="w-4 h-4 text-[#d99136]" />
+                <span>Book Clinic Appointment</span>
               </Link>
               <a
                 href={getWhatsAppUrl(WHATSAPP_TEMPLATES.general)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-[#25D366] text-white text-sm font-semibold hover:bg-[#20ba59] transition-all shadow-xs"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#25D366] text-white text-sm font-semibold hover:bg-[#20ba59] transition-all shadow-xs active:scale-95"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
-                <span>WhatsApp वर चॅट करा</span>
+                <span>Chat on WhatsApp</span>
               </a>
             </div>
           </div>

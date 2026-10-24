@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UserCog, ShieldCheck, Mail, Phone, Plus, Check } from 'lucide-react';
-import { initialProfiles } from '@/lib/db/initial-data';
+import Link from 'next/link';
+import { UserCog, ShieldCheck, Mail, Phone, Plus, Check, Trash2, Power, Settings, BarChart3, ShieldAlert } from 'lucide-react';
+import { db } from '@/lib/db';
 import { Profile, UserRole } from '@/types/database';
 
 export default function StaffManagementPage() {
-  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
+  const [, setRefresh] = useState(0);
+  const profiles = db.getProfiles();
   const [showAddModal, setShowAddModal] = useState(false);
 
   // New staff form state
@@ -19,22 +21,33 @@ export default function StaffManagementPage() {
     e.preventDefault();
     if (!name || !email) return;
 
-    const newStaff: Profile = {
-      id: `prof-${Date.now()}`,
+    db.createProfile({
       full_name: name,
       email,
       role,
       phone,
       is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+    });
 
-    setProfiles([...profiles, newStaff]);
     setShowAddModal(false);
     setName('');
     setEmail('');
     setPhone('');
+    setRefresh((r) => r + 1);
+  };
+
+  const handleToggleStatus = (p: Profile) => {
+    if (p.role === 'owner') return; // Cannot disable owner
+    db.updateProfile(p.id, { is_active: !p.is_active });
+    setRefresh((r) => r + 1);
+  };
+
+  const handleDeleteStaff = (p: Profile) => {
+    if (p.role === 'owner') return; // Cannot delete owner
+    if (confirm(`Remove staff member ${p.full_name}?`)) {
+      db.deleteProfile(p.id);
+      setRefresh((r) => r + 1);
+    }
   };
 
   return (
@@ -53,11 +66,43 @@ export default function StaffManagementPage() {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#183d2b] hover:bg-[#262820] text-white text-xs font-semibold shadow-xs"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#183d2b] hover:bg-[#262820] text-white text-xs font-semibold shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Staff Member</span>
+          <span>+ Add Staff Member</span>
         </button>
+      </div>
+
+      {/* Sub Navigation Bar */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#e6dfd3] pb-3 text-xs">
+        <Link
+          href="/admin/settings"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium flex items-center gap-1.5"
+        >
+          <Settings className="w-3.5 h-3.5" />
+          <span>1. Practice Info & Timings</span>
+        </Link>
+        <Link
+          href="/admin/staff"
+          className="px-3.5 py-1.5 rounded-lg bg-[#183d2b] text-white font-bold flex items-center gap-1.5"
+        >
+          <UserCog className="w-3.5 h-3.5" />
+          <span>2. Staff Accounts</span>
+        </Link>
+        <Link
+          href="/admin/reports"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium flex items-center gap-1.5"
+        >
+          <BarChart3 className="w-3.5 h-3.5" />
+          <span>3. Practice Reports</span>
+        </Link>
+        <Link
+          href="/admin/audit-log"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium flex items-center gap-1.5"
+        >
+          <ShieldAlert className="w-3.5 h-3.5" />
+          <span>4. Audit Trail</span>
+        </Link>
       </div>
 
       {/* Staff List */}
@@ -85,13 +130,33 @@ export default function StaffManagementPage() {
                 )}
               </div>
 
-              <span
-                className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                  p.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-800'
-                }`}
-              >
-                {p.is_active ? 'Active' : 'Disabled'}
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                    p.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {p.is_active ? 'Active' : 'Disabled'}
+                </span>
+                {p.role !== 'owner' && (
+                  <button
+                    onClick={() => handleToggleStatus(p)}
+                    title={p.is_active ? 'Disable account' : 'Enable account'}
+                    className="p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                  >
+                    <Power className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                {p.role !== 'owner' && (
+                  <button
+                    onClick={() => handleDeleteStaff(p)}
+                    title="Remove staff member"
+                    className="p-1 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="pt-3 border-t border-[#e6dfd3] text-xs text-[#6b7280] flex justify-between items-center">

@@ -81,11 +81,33 @@ export default function PrescriptionsManagementPage() {
 
         <button
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#183d2b] hover:bg-[#254f39] text-white text-xs font-bold shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Compose Prescription</span>
+          <span>+ Write Prescription</span>
         </button>
+      </div>
+
+      {/* Sub Navigation Bar */}
+      <div className="flex items-center gap-2 border-b border-[#e6dfd3] pb-3 text-xs">
+        <Link
+          href="/admin/patients"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium"
+        >
+          1. All Patients ({patients.length})
+        </Link>
+        <Link
+          href="/admin/prescriptions"
+          className="px-3.5 py-1.5 rounded-lg bg-[#183d2b] text-white font-bold"
+        >
+          2. Prescriptions (Rx)
+        </Link>
+        <Link
+          href="/admin/visits"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium"
+        >
+          3. Clinical Visits
+        </Link>
       </div>
 
       {/* Search */}

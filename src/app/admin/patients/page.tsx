@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   UserCheck,
   ChevronRight,
+  FileText,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
@@ -53,20 +54,52 @@ export default function PatientsDirectoryPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#183d2b] flex items-center gap-2">
-            <Users className="w-6 h-6 text-[#6517a3]" />
-            <span>Patient Master Directory</span>
+            <Users className="w-6 h-6 text-[#183d2b]" />
+            <span>Patients & Clinical Records</span>
           </h1>
           <p className="text-xs text-[#6b7280] mt-1">
-            Search, manage medical history, treatment courses, and follow-ups.
+            Search, manage medical history, treatment courses, visits, and prescriptions.
           </p>
         </div>
 
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/admin/prescriptions"
+            className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-[#e6dfd3] hover:bg-gray-50 text-[#183d2b] text-xs font-semibold shadow-xs"
+          >
+            <FileText className="w-4 h-4 text-[#6517a3]" />
+            <span>Prescriptions</span>
+          </Link>
+
+          <Link
+            href="/admin/patients/new"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#183d2b] hover:bg-[#254f39] text-white text-xs font-bold shadow-xs transition-all active:scale-98"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ Register New Patient</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Sub Navigation Bar */}
+      <div className="flex items-center gap-2 border-b border-[#e6dfd3] pb-3 text-xs">
         <Link
-          href="/admin/patients/new"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#6517a3] hover:bg-[#490f77] text-white text-xs font-semibold shadow-xs transition-all active:scale-98"
+          href="/admin/patients"
+          className="px-3.5 py-1.5 rounded-lg bg-[#183d2b] text-white font-bold"
         >
-          <Plus className="w-4 h-4" />
-          <span>Register New Patient</span>
+          1. All Patients ({patients.length})
+        </Link>
+        <Link
+          href="/admin/prescriptions"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium"
+        >
+          2. Prescriptions (Rx)
+        </Link>
+        <Link
+          href="/admin/visits"
+          className="px-3.5 py-1.5 rounded-lg bg-white border border-[#e6dfd3] text-[#6b7280] hover:text-[#183d2b] font-medium"
+        >
+          3. Clinical Visits
         </Link>
       </div>
 

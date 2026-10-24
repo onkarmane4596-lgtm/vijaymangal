@@ -263,8 +263,36 @@ export default function PatientProfilePage({ params }: PageProps) {
             </a>
 
             <button
+              onClick={() => {
+                const todayOpd = db.getTodayOpdQueue();
+                const existing = todayOpd.find((o) => o.patient_id === patient.id);
+                if (existing) {
+                  alert(`${patient.full_name} is already checked in with Token #${existing.token_number}`);
+                  return;
+                }
+                const token = db.addOpdToken({
+                  patient_id: patient.id,
+                  patient_name: patient.full_name,
+                  phone_number: patient.phone_number,
+                  visit_type: 'course_followup',
+                  status: 'waiting',
+                  arrival_time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  assigned_doctor: 'Dr. Supriya S. Kadam',
+                  notes: 'Direct check-in from patient profile.',
+                });
+                alert(`Token #${token.token_number} issued! ${patient.full_name} added to today's OPD Queue.`);
+                setRefresh((r) => r + 1);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#183d2b] hover:bg-[#254f39] text-white text-xs font-semibold shadow-xs"
+              title="Issue OPD Token for today's visit"
+            >
+              <Activity className="w-3.5 h-3.5 text-[#d99136]" />
+              <span>+ Issue OPD Token</span>
+            </button>
+
+            <button
               onClick={() => setShowVisitModal(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#183d2b] hover:bg-[#262820] text-white text-xs font-semibold shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#6517a3] hover:bg-[#490f77] text-white text-xs font-semibold shadow-xs"
             >
               <Stethoscope className="w-3.5 h-3.5" />
               <span>+ Log Visit</span>
